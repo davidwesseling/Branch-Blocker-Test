@@ -10,7 +10,7 @@ multibranchPipelineJob("${name}") {
 
     factory {
         workflowBranchProjectFactory {
-            scriptPath('Jenkinsfile_flakytestdetector')
+            scriptPath('Jenkinsfile_testjob')
         }
     }
 
