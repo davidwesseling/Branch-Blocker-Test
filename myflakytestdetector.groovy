@@ -1,6 +1,6 @@
 String name = 'flaky-test-detector'
 // String repository = 'ssh://git@bitbucket.ipttools.info/ed/pass.git'
-String repository = 'TOCONFIRM'
+String repository = 'https://github.com/davidwesseling/Branch-Blocker-Test.git'
 
 multibranchPipelineJob("${name}") {
 
