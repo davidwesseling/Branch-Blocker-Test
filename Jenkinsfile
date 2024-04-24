@@ -1,14 +1,14 @@
-def nums = ["1", "2", "3"]
+def jobs = ["JobA", "JobB", "JobC"]
 
-def parallelFlakyTestDetectorJob = nums.collectEntries {
+def parallelStagesMap = jobs.collectEntries {
     ["${it}" : generateStage(it)]
 }
 
-def generateStage(num) {
+def generateStage(job) {
     return {
-        stage("Flaky Test Detector Run #${num}") {
-                echo "This is ${jnum}."
-                sh script: "sleep 5"
+        stage("stage: ${job}") {
+                echo "This is ${job}."
+                sh script: "sleep 15"
         }
     }
 }
@@ -17,12 +17,16 @@ pipeline {
     agent any
 
     stages {
+        stage('non-parallel stage') {
+            steps {
+                echo 'This stage will be executed first.'
+            }
+        }
 
-
-        stage('Start Flaky Test Detector ') {
+        stage('parallel stage') {
             steps {
                 script {
-                    parallel parallelFlakyTestDetectorJob
+                    parallel parallelStagesMap
                 }
             }
         }
