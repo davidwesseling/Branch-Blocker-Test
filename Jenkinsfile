@@ -1,48 +1,34 @@
-// pipeline {
-//     agent any 
+def jobs = ["JobA", "JobB", "JobC"]
 
-//     stages {
-//         script{
-//             for (int i = 0; i < 3; i++) {
-//                 stage("init"){
-//                     steps{
+def parallelStagesMap = jobs.collectEntries {
+    ["${it}" : generateStage(it)]
+}
 
-//                         echo "\nScript testing number: ${i} "
-
-//                     }
-//                 } 
-//             }   
-//         }           
-//     }
-// }
-
-
-def createStage(number) {
-
-    for (int i = 0; i < number; i++) {
-        stage("my stage ${i}") {
-            steps {
-                echo "this is my stgae number: ${i}"
-            }
+def generateStage(job) {
+    return {
+        stage("stage: ${job}") {
+                echo "This is ${job}."
+                sh script: "sleep 5"
         }
     }
 }
 
-
 pipeline {
-    agent any 
+    agent any
 
     stages {
-        stage("init"){
-            steps{
-                script{
-                    createStage(3)
-                }
-               
-
+        stage('non-parallel stage') {
+            steps {
+                echo 'This stage will be executed first.'
             }
-        } 
-            
-        
+        }
+
+        stage('parallel stage') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }
     }
 }
