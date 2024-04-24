@@ -35,8 +35,10 @@ pipeline {
     stages {
         stage("init"){
             steps{
-
-               createStage(3)
+                script{
+                    createStage(3)
+                }
+               
 
             }
         } 
